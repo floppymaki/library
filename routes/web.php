@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\BookCopyController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -19,7 +21,21 @@ Route::get('/', function () {
     return view('index');
 })->name('home');
 
-Route::get('/collection', [BookController::class, 'showCollection'])->name('collection');
+Route::controller(BookController::class)->group(function () {
+    Route::get('/collection', 'showCollection')->name('collection');
+    Route::get('/book/{ISBN}', 'showBook')->name('book');
+
+    Route::post('/edit/{ISBN}', 'edit')->middleware(['auth', 'verified', 'admin'])->name('book.edit');
+});
+
+Route::controller(BookCopyController::class)->group(function () {
+    Route::post('/borrow/{ISBN}', 'borrow')->middleware(['auth', 'verified'])->name('book.borrow');
+    Route::get('/return/{id}', 'return')->middleware(['auth', 'verified', 'verifyBookReturnAccess'])->name('book.return');
+});
+
+Route::get('/admin', function () {
+    return view('admin_dashboard');
+})->middleware(['auth', 'verified', 'admin'])->name('admin.main');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('author_id');
             $table->integer('publication_year');
             $table->string('description');
+            $table->string('cover_path');
 
             $table->foreign('author_id')->references('id')->on('authors');
         });

@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('book_copy_id');
-            $table->timestamp('checked_out_at');
-            $table->timestamp('checked_in_at')->nullable();
-            $table->date('check_in_date');     
+            $table->date('checked_out_at');
+            $table->date('checked_in_at')->nullable();
+            $table->date('return_date');     
             
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('book_copy_id')->references('id')->on('book_copies');

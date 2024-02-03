@@ -11,8 +11,10 @@ class BookBorrow extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id', 'book_copy_id', 'check_out_at', 'checked_in_at', 'check_in_date',
+        'user_id', 'book_copy_id', 'checked_out_at', 'checked_in_at', 'return_date',
     ];
+
+    public $timestamps = false;
 
     public function user()
     {
@@ -23,4 +25,5 @@ class BookBorrow extends Model
     {
         return $this->belongsTo(BookCopy::class);
     }
+
 }

@@ -3,7 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Book;
+use App\Models\BookBorrow;
+use App\Models\BookCopy;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 
 class BookController extends Controller
 {
@@ -11,10 +16,27 @@ class BookController extends Controller
 
     public function showCollection()
     {
-        $books = Book::with('author')->get();
+        $books = Book::with('author')->paginate(8);
 
         // return view('collection', ['books' => $books]);
         return view('collection', compact('books'));
+    }
+
+    public function showBook($ISBN)
+    {
+        // $book = Book::firstOrFail()->where('ISBN', $ISBN)->get();
+        $book = Book::where('ISBN', $ISBN)->firstOrFail();
+
+        return view('book', ['book' => $book]);
+    }
+
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(Book $book)
+    {
+        //
     }
 
     /**
@@ -49,13 +71,7 @@ class BookController extends Controller
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Book $book)
-    {
-        //
-    }
+
 
     /**
      * Update the specified resource in storage.

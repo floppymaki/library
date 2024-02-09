@@ -20,7 +20,7 @@ class ReviewController extends Controller
      */
     public function create()
     {
-        //
+        // user_id, isbn, comment, rating
     }
 
     /**

@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\BookCopyController;
 use App\Http\Controllers\ProfileController;
@@ -25,21 +27,32 @@ Route::controller(BookController::class)->group(function () {
     Route::get('/collection', 'showCollection')->name('collection');
     Route::get('/book/{ISBN}', 'showBook')->name('book');
 
+    Route::get('/edit/{ISBN}', 'showEditForm')->middleware(['auth', 'verified', 'admin'])->name('book.editForm');
     Route::post('/edit/{ISBN}', 'edit')->middleware(['auth', 'verified', 'admin'])->name('book.edit');
+    Route::post('/book/add', 'store')->middleware(['auth', 'verified', 'admin'])->name('book.add');
+
+});
+
+Route::controller(AuthorController::class)->group(function () {
+    Route::get('/author/{id}', 'showAuthor')->name('author.show');
+    Route::post('/addAuthor', 'store')->name('author.add')->middleware(['auth', 'verified', 'admin']);
+    Route::post('/editAuthor', 'update')->name('author.edit')->middleware(['auth', 'verified', 'admin']);
 });
 
 Route::controller(BookCopyController::class)->group(function () {
-    Route::post('/borrow/{ISBN}', 'borrow')->middleware(['auth', 'verified'])->name('book.borrow');
+    Route::get('/borrow/{ISBN}', 'borrow')->middleware(['auth', 'verified'])->name('book.borrow');
     Route::get('/return/{id}', 'return')->middleware(['auth', 'verified', 'verifyBookReturnAccess'])->name('book.return');
+    Route::get('/addCopy/{ISBN}', 'create')->middleware(['auth', 'verified', 'admin'])->name('book.addCopy');
 });
 
-Route::get('/admin', function () {
-    return view('admin_dashboard');
-})->middleware(['auth', 'verified', 'admin'])->name('admin.main');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::controller(AdminController::class)->group(function () {
+    Route::get('/admin', 'showDashboard')->middleware(['auth', 'verified', 'admin'])->name('admin.main');
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

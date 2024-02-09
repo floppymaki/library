@@ -26,4 +26,8 @@ class BookBorrow extends Model
         return $this->belongsTo(BookCopy::class);
     }
 
+    public function isBorrowed()
+    {
+        return $this->checked_in_at === null;
+    }
 }

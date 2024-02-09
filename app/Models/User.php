@@ -57,7 +57,12 @@ class User extends Authenticatable
 
     public function borrows()
     {
-        return $this->hasMany(BookBorrow::class);
+        return $this->hasMany(BookBorrow::class)->whereNull('checked_in_at');
+    }
+
+    public function borrowHistory()
+    {
+        return $this->hasMany(BookBorrow::class)->whereNotNull('checked_in_at');
     }
 
     public function reviews()

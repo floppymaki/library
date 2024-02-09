@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Book;
 use App\Models\BookBorrow;
 use App\Models\BookCopy;
 use Carbon\Carbon;
@@ -59,9 +60,16 @@ class BookCopyController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create($ISBN)
     {
-        //
+        Book::where('ISBN', $ISBN)->firstOrFail();
+
+        BookCopy::create([
+            'ISBN' => $ISBN,
+            'available' => 1,
+        ]);
+
+        return Redirect::back();
     }
 
     /**

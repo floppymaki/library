@@ -3,10 +3,23 @@
 namespace App\Http\Controllers;
 
 use App\Models\Author;
+use App\Models\Book;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 
 class AuthorController extends Controller
 {
+
+    public function showAuthor($id)
+    {
+        $author = Author::find($id);
+        $books = Book::where('author_id', $id)->get();
+
+        // dd($id, $author);
+
+        return view('author', compact('author', 'books'));
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -18,7 +31,7 @@ class AuthorController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
         //
     }
@@ -28,7 +41,25 @@ class AuthorController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'author' => 'required',
+            'bio' => 'required',
+        ]);
+
+        $author = Author::where('name', $request->author)->first();
+
+
+        if($author !== null) {
+            dd('this author already exists');
+        }
+
+        // create new author here
+        Author::create([
+            'name' => $request['author'],
+            'biography' => $request['bio'],
+        ]);
+
+        return Redirect::back();
     }
 
     /**
@@ -44,15 +75,28 @@ class AuthorController extends Controller
      */
     public function edit(Author $author)
     {
-        //
+
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Author $author)
+    public function update(Request $request)
     {
-        //
+        $author = Author::where('name', $request->author)->first();
+
+        $request->validate([
+            'author' => 'required',
+            'bio' => 'required',
+        ]);
+
+
+        $author->update([
+            'name' => $request['author'],
+            'biography' => $request['bio']
+        ]);
+
+        return Redirect::back();
     }
 
     /**

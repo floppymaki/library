@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\BookCopyController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ReviewController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -36,7 +37,11 @@ Route::controller(BookController::class)->group(function () {
 Route::controller(AuthorController::class)->group(function () {
     Route::get('/author/{id}', 'showAuthor')->name('author.show');
     Route::post('/addAuthor', 'store')->name('author.add')->middleware(['auth', 'verified', 'admin']);
-    Route::post('/editAuthor', 'update')->name('author.edit')->middleware(['auth', 'verified', 'admin']);
+    Route::post('/editAuthor/{id}', 'update')->name('author.edit')->middleware(['auth', 'verified', 'admin']);
+});
+
+Route::controller(ReviewController::class)->group(function () {
+    Route::post('/placeReview/{ISBN}', 'store')->name('review.place')->middleware(['auth', 'verified']);
 });
 
 Route::controller(BookCopyController::class)->group(function () {

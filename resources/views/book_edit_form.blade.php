@@ -23,7 +23,7 @@
             <button type="submit" class="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 rounded">Save changes</button>
         
             <div class="py-5">
-                <input autocomplete="off" name="author" id="author" type="text" class="text-2xl" value="{{ $book->author->name }}"></input>
+                <input autocomplete="off" name="author" id="author_name" type="text" class="text-2xl" value="{{ $book->author->name }}"></input>
                 @error('author')
                     <div class="alert alert-danger">{{ $message }}</div>
                 @enderror

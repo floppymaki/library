@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Review;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 
 class ReviewController extends Controller
 {
@@ -26,9 +28,22 @@ class ReviewController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, $ISBN)
     {
-        //
+        $request->validate([
+            'comment' => 'required|string|max:500',
+            'rating_value' => 'required|int|min:1|max:5',
+        ]);
+
+
+        Review::create([
+            'user_id' => Auth::user()->id,
+            'ISBN' => $ISBN,
+            'comment' => $request->comment,
+            'rating' => $request->rating_value,
+        ]);
+
+        return Redirect::back();
     }
 
     /**

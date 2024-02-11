@@ -1,11 +1,11 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('My bookshelf') }}
+            My bookshelf
         </h2>
     </x-slot>
 
-    <div class="py-12">
+    <!-- <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
@@ -13,9 +13,9 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 
-    <div class="mx-20">
+    <div class="mx-20 py-10">
         <p class="text-2xl mb-5">You are borrowing {{ Auth::user()->borrows->count() }} books.</p>
         <div class="grid grid-cols-5 gap-y-10">
             @foreach(Auth::user()->borrows as $borrowedBook)
@@ -42,9 +42,11 @@
         </div>
 
         <p class="text-2xl mb-5 mt-20">History</p>
-        <div class="flex">
+        <div class="grid grid-cols-5 gap-y-10">
+
+
             @foreach(Auth::user()->borrowHistory as $book)
-                <div class="me-10">
+                <div class="me-20 border p-5 hover:bg-gradient-to-r from-cyan-500 to-blue-500 flex flex-col justify-between">
                     
                     <a href="{{ route('book', $book->bookCopy->ISBN) }}"><img src="{{ asset('storage/' . $book->bookCopy->book->cover_path) }}" class="h-64" alt="cover image"></a>
                     <p>{{ $book->bookCopy->book->title }}</p>

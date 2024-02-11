@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -37,6 +38,15 @@ class Book extends Model
 
     public function reviews()
     {
-        return $this->hasMany(Review::class, 'ISBN', 'ISBN');
+        return $this->hasMany(Review::class, 'ISBN', 'ISBN')->orderBy('created_at', 'desc');
+    }
+
+    protected function avgRating(): Attribute
+    {
+        return Attribute::make(get: function () {
+            $ratings = $this->reviews()->pluck('rating')->toArray();
+            $averageRating = count($ratings) > 0 ? array_sum($ratings) / count($ratings) : 0;
+            return $averageRating;
+        });
     }
 }

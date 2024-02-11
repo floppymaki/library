@@ -81,9 +81,9 @@ class AuthorController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
-        $author = Author::where('name', $request->author)->first();
+        $author = Author::find($id);
 
         $request->validate([
             'author' => 'required',

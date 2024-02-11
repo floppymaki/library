@@ -141,6 +141,7 @@ class BookController extends Controller
             'cover_path' => $imagePath,
         ]);        
 
+        return Redirect::back();
     }
 
     /**

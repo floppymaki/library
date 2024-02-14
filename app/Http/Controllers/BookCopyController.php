@@ -49,6 +49,7 @@ class BookCopyController extends Controller
         return Redirect::back();
     }
 
+
     /**
      * Display a listing of the resource.
      */

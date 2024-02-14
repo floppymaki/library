@@ -72,6 +72,11 @@ class User extends Authenticatable
         return $this->hasMany(Review::class);
     }
 
+    public function reviewedThisBook($ISBN)
+    {
+        return in_array($ISBN, $this->reviews()->pluck('ISBN')->toArray());
+    }
+
     public function isAdmin()
     {
         return $this->isAdmin == 1;

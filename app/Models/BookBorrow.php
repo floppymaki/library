@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Events\BookBorrowed;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -12,6 +13,10 @@ class BookBorrow extends Model
 
     protected $fillable = [
         'user_id', 'book_copy_id', 'checked_out_at', 'checked_in_at', 'return_date',
+    ];
+
+    protected $dispatchesEvents = [
+        'created' => BookBorrowed::class,
     ];
 
     public $timestamps = false;

@@ -35,4 +35,9 @@ class BookBorrow extends Model
     {
         return $this->checked_in_at === null;
     }
+
+    // public function book()
+    // {
+    //     return $this->bookCopy()->
+    // }
 }
